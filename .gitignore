@@ -1,0 +1,15 @@
+# Created by .ignore support plugin (hsz.mobi)
+*.class
+*.log
+
+logs
+target
+/.idea
+/.idea_modules
+/.classpath
+/.project
+/.settings
+/RUNNING_PID
+
+# Mac Files
+.DS_STORE
