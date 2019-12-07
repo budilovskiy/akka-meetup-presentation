@@ -15,7 +15,6 @@ object Main extends App {
   val projectManager: ActorRef = system.actorOf(Props(new ProjectManager("Fred")), name = "pm_actor")
 
   projectManager ! StartProject("AWESOME PROJECT")
-//  projectManager ! "Finish"
   projectManager ! Finish
 
   while (System.in.read() != -1) {}
