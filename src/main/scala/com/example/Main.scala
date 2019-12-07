@@ -1,6 +1,6 @@
 package com.example
 
-import akka.actor.ActorSystem
+import akka.actor.{ActorRef, ActorSystem, Props}
 
 import scala.concurrent.ExecutionContextExecutor
 
@@ -11,6 +11,11 @@ object Main extends App {
   // Using dispatcher as execution context in whole application
   // This dispatcher is used for all actors in the actor system by default
   implicit val executionContext: ExecutionContextExecutor = system.dispatcher
+
+  val projectManager: ActorRef = system.actorOf(Props(new ProjectManager("Fred")), name = "pm_actor")
+
+  projectManager ! StartProject("AWESOME PROJECT")
+  projectManager ! StartProject("AWESOME PROJECT")
 
   while (System.in.read() != -1) {}
   // Terminates the actor system
