@@ -1,6 +1,6 @@
 package com.example
 
-import akka.actor.{Actor, ActorLogging}
+import akka.actor.{Actor, ActorLogging, Props}
 
 case class StartProject(projectName: String)
 object Finish
@@ -18,6 +18,10 @@ class ProjectManager(name: String) extends Actor with ActorLogging {
         Task(3, "Crate frontend."),
         Task(4, "Deploy application")
       )
+
+      val techLead = context.actorOf(Props(new TechnicalLeader("Bob")), "tech_lead_actor")
+      techLead ! Develop(projectName, projectTasks)
+
       context.become(Working(projectName))
   }
 
