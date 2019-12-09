@@ -9,12 +9,12 @@ class ProjectManager(name: String) extends Actor with ActorLogging {
   def Idle: Receive = {
     case StartProject(projectName) =>
       log.info(s"Starting project $projectName.")
-      context.become(Working)
+      context.become(Working(projectName))
   }
 
-  def Working: Receive = {
+  def Working(projectName: String): Receive = {
     case Finish =>
-      log.info("Finish current project.")
+      log.info(s"Finish current project $projectName.")
       context.become(Idle)
   }
 
