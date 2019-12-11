@@ -5,7 +5,7 @@ import akka.actor.{Actor, ActorLogging, Props}
 case class StartProject(projectName: String)
 object Finish
 
-case class Task(id: Int, description: String, done: Boolean = false)
+case class Task(id: Int, description: String, done: Boolean = false, succeeded: Boolean = false)
 
 class ProjectManager(name: String) extends Actor with ActorLogging {
   def Idle: Receive = {
