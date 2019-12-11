@@ -6,7 +6,7 @@ case class StartProject(projectName: String)
 object Finish
 object CheckTasks
 
-case class Task(id: Int, description: String, done: Boolean = false, succeeded: Boolean = false)
+case class Task(id: Int, description: String, testSucceeded: Boolean = false, done: Boolean = false)
 
 class ProjectManager(name: String) extends Actor with ActorLogging {
   private val techLead = context.actorOf(Props(new TechnicalLeader("Bob")), "tech_lead_actor")
@@ -33,18 +33,18 @@ class ProjectManager(name: String) extends Actor with ActorLogging {
     case command: TaskForTest =>
       qaLead ! command
 
-    case TestedTask(task) if task.succeeded =>
+    case TestedTask(task) if task.testSucceeded =>
       val newPullTasks = tasks.filterNot(_.id == task.id) :+ task
       context.become(
         Working(projectName, newPullTasks)
       )
       self ! CheckTasks
 
-    case TestedTask(task) if !task.succeeded =>
+    case TestedTask(task) if !task.testSucceeded =>
       techLead ! FailedTask(task.copy(done = false))
 
     case CheckTasks =>
-      if (tasks.forall(t => t.succeeded && t.done))
+      if (tasks.forall(t => t.testSucceeded && t.done))
         context.self ! Finish
 
     case Finish =>

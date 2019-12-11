@@ -13,9 +13,9 @@ class QaLeader(name: String)  extends Actor with ActorLogging {
 
   def receive: Receive = {
 
-    case command: TaskForTest =>
+    case TaskForTest(task) =>
       val randomTester: ActorRef = testers(scala.util.Random.nextInt(testers.length))
-      randomTester ! command
+      randomTester ! task
 
     case command: TestedTask =>
       context.parent ! command

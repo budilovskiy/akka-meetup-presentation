@@ -21,7 +21,7 @@ class TechnicalLeader(name: String) extends Actor with ActorLogging {
     case Develop(projectName, tasks) =>
       log.info(s"Starting to develop $projectName.")
 
-      tasks.filterNot(_.done).foreach { task: Task => randomDeveloper ! WorkOnTask(task) }
+      tasks.filterNot(_.done).foreach { task: Task => randomDeveloper ! task }
 
       context.become(projectWork)
   }
@@ -30,6 +30,6 @@ class TechnicalLeader(name: String) extends Actor with ActorLogging {
     case TaskFinished(task: Task) =>
       context.parent ! TaskForTest(task)
     case FailedTask(task) =>
-      randomDeveloper ! WorkOnTask(task)
+      randomDeveloper ! task
   }
 }
